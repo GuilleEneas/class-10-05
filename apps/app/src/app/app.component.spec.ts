@@ -2,30 +2,47 @@ import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [AppComponent],
-    }).compileComponents();
+  let componentUnderTest: AppComponent;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [AppComponent],
+    });
+
+    componentUnderTest = TestBed.inject(AppComponent);
   });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+  describe('METHOD: add', () => {
+    it('should add 2 + 3 = 5', () => {
+      const expectedValue = 5;
+
+      const actualValue = componentUnderTest.add(2, 3);
+
+      expect(actualValue).toEqual(expectedValue);
+    });
+
+    it('should add 1 + 1 = 2', () => {
+      expect(componentUnderTest.add(1, 1)).toEqual(2);
+    });
   });
 
-  it(`should have as title 'app'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('app');
+  describe('METHOD: setValue', () => {
+    it('should set internal value', () => {
+      const input = 'fake Value';
+
+      componentUnderTest.setValue(input);
+
+      expect(componentUnderTest.value).toEqual(input);
+    });
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain(
-      'Welcome to app!'
-    );
+  describe('METHOD: getValue', () => {
+    it('should return internal value', () => {
+      componentUnderTest.value = 'fake Value';
+
+      const actualValue = componentUnderTest.getValue();
+
+      expect(actualValue).toEqual(componentUnderTest.value);
+    });
   });
 });
