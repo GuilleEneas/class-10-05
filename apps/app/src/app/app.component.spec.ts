@@ -1,48 +1,30 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { OneService } from './one.service';
+import { provideAutoSpy, Spy } from 'jest-auto-spies';
 
 describe('AppComponent', () => {
   let componentUnderTest: AppComponent;
+  let oneServiceSpy: Spy<OneService>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [AppComponent],
+      providers: [AppComponent, provideAutoSpy(OneService)],
     });
 
     componentUnderTest = TestBed.inject(AppComponent);
+    oneServiceSpy = TestBed.inject<any>(OneService);
   });
 
-  describe('METHOD: add', () => {
-    it('should add 2 + 3 = 5', () => {
-      const expectedValue = 5;
+  describe('METHOD: getThingsFromService', () => {
+    it('should get the things from the service', () => {
+      const expectedThings = 'any value';
+      oneServiceSpy.getThings.mockReturnValue(expectedThings);
 
-      const actualValue = componentUnderTest.add(2, 3);
+      const actualThings = componentUnderTest.getThingsFromService();
 
-      expect(actualValue).toEqual(expectedValue);
-    });
-
-    it('should add 1 + 1 = 2', () => {
-      expect(componentUnderTest.add(1, 1)).toEqual(2);
-    });
-  });
-
-  describe('METHOD: setValue', () => {
-    it('should set internal value', () => {
-      const input = 'fake Value';
-
-      componentUnderTest.setValue(input);
-
-      expect(componentUnderTest.value).toEqual(input);
-    });
-  });
-
-  describe('METHOD: getValue', () => {
-    it('should return internal value', () => {
-      componentUnderTest.value = 'fake Value';
-
-      const actualValue = componentUnderTest.getValue();
-
-      expect(actualValue).toEqual(componentUnderTest.value);
+      expect(actualThings).toEqual(expectedThings);
     });
   });
 });

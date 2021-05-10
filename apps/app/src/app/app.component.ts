@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { OneService } from './one.service';
 
 @Component({
   selector: 'testing-intro-root',
@@ -6,17 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  value: string;
-
-  add(a, b) {
-    return a + b;
+  getThingsFromService() {
+    return this.oneService.getThings();
   }
 
-  setValue(value: string): void {
-    this.value = value;
-  }
-
-  getValue(): string {
-    return this.value;
-  }
+  constructor(private oneService: OneService) {}
 }
